@@ -3,10 +3,9 @@ This package allows you to add local storage to your SvelteKit apps which works 
 
 ## Setup
 1. Install the package
-```bash
-npm install @thetinkerinc/isomorphic-local
-bun add @thetinkerinc/isomorphic-local
-```
+`npm install @thetinkerinc/isomorphic-local`
+`bun add @thetinkerinc/isomorphic-local`
+
 
 2. Add an instance to incoming requests
 ```ts
@@ -54,4 +53,53 @@ declare global {
 export {};
 ```
 
-5.
+Now you're all set up and ready to go!
+
+## Usage
+[Load functions](https://svelte.dev/docs/kit/load) will have access to a request specific version of the data stored for the user making the request. It can be accessed through [`event.locals`](https://svelte.dev/docs/kit/hooks#Server-hooks-locals).
+
+**Important note** This will only work in server load functions (+layout.server.ts and +page.server.ts) because SvelteKit currently [doesn't support accessing cookies in universal load functions](https://github.com/sveltejs/kit/issues/11828).
+
+```ts
+// src/routes/+page.server.ts
+import db from '$lib/db';
+
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const defaultValue = 1;
+	const pageNum: number = locals.localStorage.get('lastPageVisited', defaultValue);
+
+	const posts = await db.getPosts({
+		pageNum
+	});
+
+	return {
+		posts
+	};
+};
+```
+
+Everywhere else (pages, components, library files), you can import and use the library directly.
+```svelte
+// src/routes/+page.svelte
+
+<script lang="ts">
+import local from '@thetinkerinc/isomorphic-local';
+
+import Posts from './posts.svelte';
+import Pages from './pages.svelte';
+
+// set up a state variable with the local value
+const pageNum = $state(local.get('lastPageVisited', 1));
+
+// update the stored value whenever the state changes
+$effect(() => local.set('lastPageVisited', pageNum));
+</script>
+
+<Posts />
+<Pages
+	{pageNum}
+	onprev={() => pageNum -= 1}
+	onnext={() => pageNum +=1} />
+```
