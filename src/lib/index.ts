@@ -7,7 +7,7 @@ import type { Cookies as SvelteKitCookies, Handle, RequestEvent } from '@sveltej
 
 type BrowserCookies = typeof browserCookies;
 type CookieJar = SvelteKitCookies | BrowserCookies;
-type Cookies = CookieJar & { rm: (SvelteKitCookies['delete']) | BrowserCookies['remove']};
+type Cookies = CookieJar & { rm: SvelteKitCookies['delete'] | BrowserCookies['remove'] };
 
 class Local {
 	private cookies: Cookies | undefined = undefined;
@@ -40,7 +40,7 @@ class Local {
 		this.save(vals);
 	}
 
-	getAll(): Record<string, unknown> {
+	getAll() {
 		if (this.cookies) {
 			return devalue.parse(this.cookies.get(this.cookieName) ?? '[{}]');
 		} else {
@@ -49,7 +49,7 @@ class Local {
 	}
 
 	clear() {
-		if (!this.cookies){
+		if (!this.cookies) {
 			throw new Error('Local storage can only be cleared in load functions and in the browser');
 		}
 		this.cookies.rm(this.cookieName, { path: '/' });
@@ -66,14 +66,14 @@ class Local {
 	}
 }
 
-function nextYear(){
+function nextYear() {
 	return new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
 }
 
 const addLocalStorage: Handle = ({ event, resolve }) => {
 	event.locals.localStorage = new Local(event.cookies);
 	return resolve(event);
-}
+};
 
 function getPageData(event: RequestEvent) {
 	const { localStorage } = event.locals;

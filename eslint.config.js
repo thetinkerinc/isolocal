@@ -5,6 +5,7 @@ import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
+
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default ts.config(
@@ -20,11 +21,23 @@ export default ts.config(
 				...globals.browser,
 				...globals.node
 			}
+		},
+		rules: {
+			'no-mixed-spaces-and-tabs': 'off',
+			'no-control-regex': 'off',
+			'no-async-promise-executor': 'off',
+			'no-unused-vars': [
+				'error',
+				{
+					varsIgnorePattern: '^_.',
+					argsIgnorePattern: '^_.',
+					caughtErrorsIgnorePattern: '^_.'
+				}
+			]
 		}
 	},
 	{
 		files: ['**/*.svelte'],
-
 		languageOptions: {
 			parserOptions: {
 				parser: ts.parser

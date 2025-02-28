@@ -131,7 +131,7 @@ Removes the value stored with the given key. If there was no value stored for th
 
 
 ```ts
-getAll(): Record<string, unknown>
+getAll()
 ```
 Returns an object containing all currently saved values.
 
