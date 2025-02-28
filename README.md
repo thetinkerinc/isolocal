@@ -1,11 +1,14 @@
 # SvelteKit isomorphic local storage
 This package allows you to add local storage to your SvelteKit apps which works in SSR, in the browser, and load functions. The motivation behind this was the desire to add simple user specific functionality that can be present on the server and client without having to add database infrastructure for user preferences.
 
+Uses [devalue](https://github.com/Rich-Harris/devalue) to stringify / parse data. Anything that can be handled by devalue can be stored in isomorphic local.
+
 ## Setup
 1. Install the package
-`npm install @thetinkerinc/isomorphic-local`
-`bun add @thetinkerinc/isomorphic-local`
-
+```sh
+npm install @thetinkerinc/isomorphic-local
+bun add @thetinkerinc/isomorphic-local
+```
 
 2. Add an instance to incoming requests
 ```ts
@@ -19,6 +22,7 @@ const hooks = [addLocalStorage];
 export const handle = sequence(...hooks);
 ```
 We inject a local storage instance into requests in our server hooks to make it available inside [load functions](https://svelte.dev/docs/kit/load). You can [add other hooks in the sequence](https://svelte.dev/docs/kit/@sveltejs-kit-hooks#sequence) like normal. If they will require access to local storage, just make sure you add them after.
+
 
 3. Add info to page data
 ```ts
@@ -35,6 +39,7 @@ export const load: LayoutServerLoad = async (event) => {
 };
 ```
 Here we pass the local values to [layout data](https://svelte.dev/docs/kit/load#Layout-data) to make it available during SSR.
+
 
 4. Update TypeScript interface
 ```ts
@@ -62,6 +67,7 @@ Now you're all set up and ready to go!
 
 ```ts
 // src/routes/+page.server.ts
+
 import db from '$lib/db';
 
 import type { PageServerLoad } from './$types';
@@ -101,5 +107,36 @@ $effect(() => local.set('lastPageVisited', pageNum));
 <Pages
 	{pageNum}
 	onprev={() => pageNum -= 1}
-	onnext={() => pageNum +=1} />
+	onnext={() => pageNum += 1} />
 ```
+
+
+## API
+```ts
+get<T>(key: string, fallback?: T): T | undefined
+```
+Returns the value stored with the given key. If there is no value, return either an optional fallback value or undefined.
+
+
+```ts
+set<T>(key: string, val: T)
+```
+Stores an arbitrary value with a given key.
+
+
+```ts
+rm(key: string)
+```
+Removes the value stored with the given key. If there was no value stored for that key, it will do nothing.
+
+
+```ts
+getAll(): Record<string, unknown>
+```
+Returns an object containing all currently saved values.
+
+
+```ts
+clear()
+```
+Removes all values from storage.

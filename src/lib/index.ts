@@ -23,21 +23,29 @@ class Local {
 		}
 	}
 
-	get(k: string, fallback: unknown) {
+	get<T>(key: string, fallback?: T): T | undefined {
 		const vals = this.getAll();
-		return vals[k] ?? fallback;
+		return vals[key] ?? fallback;
 	}
 
-	set(k: string, val: unknown) {
+	set<T>(key: string, val: T) {
 		const vals = this.getAll();
-		vals[k] = val;
+		vals[key] = val;
 		this.save(vals);
 	}
 
-	rm(k: string) {
+	rm(key: string) {
 		const vals = this.getAll();
-		delete vals[k];
+		delete vals[key];
 		this.save(vals);
+	}
+
+	getAll(): Record<string, unknown> {
+		if (this.cookies) {
+			return devalue.parse(this.cookies.get(this.cookieName) ?? '[{}]');
+		} else {
+			return page.data.localStorage ?? {};
+		}
 	}
 
 	clear() {
@@ -45,14 +53,6 @@ class Local {
 			throw new Error('Local storage can only be cleared in load functions and in the browser');
 		}
 		this.cookies.rm(this.cookieName, { path: '/' });
-	}
-
-	getAll() {
-		if (this.cookies) {
-			return devalue.parse(this.cookies.get(this.cookieName) ?? '[{}]');
-		} else {
-			return page.data.localStorage ?? {};
-		}
 	}
 
 	private save(vals: unknown) {
