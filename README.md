@@ -1,13 +1,13 @@
 # SvelteKit isomorphic local storage
 This package allows you to add local storage to your SvelteKit apps which works in SSR, in the browser, and load functions. The motivation behind this was the desire to add simple user specific functionality that can be present on the server and client without having to add database infrastructure for user preferences.
 
-Uses [devalue](https://github.com/Rich-Harris/devalue) to stringify / parse data. Anything that can be handled by devalue can be stored in isomorphic local.
+Uses [devalue](https://github.com/Rich-Harris/devalue) to stringify / parse data. Anything that can be handled by devalue can be stored in isolocal.
 
 ## Setup
 1. Install the package
 ```sh
-npm install @thetinkerinc/isomorphic-local
-bun add @thetinkerinc/isomorphic-local
+npm install @thetinkerinc/isolocal
+bun add @thetinkerinc/isolocal
 ```
 
 2. Add an instance to incoming requests
@@ -15,7 +15,7 @@ bun add @thetinkerinc/isomorphic-local
 // src/hooks.server.ts
 
 import { sequence } from '@sveltejs/kit/hooks';
-import { addLocalStorage } from '@thetinkerinc/isomorphic-local';
+import { addLocalStorage } from '@thetinkerinc/isolocal';
 
 const hooks = [addLocalStorage];
 
@@ -28,7 +28,7 @@ We inject a local storage instance into requests in our server hooks to make it 
 ```ts
 // src/routes/+layout.server.ts
 
-import { getPageData } from '@thetinkerinc/isomorphic-local';
+import { getPageData } from '@thetinkerinc/isolocal';
 
 import type { LayoutServerLoad } from './$types';
 
@@ -45,7 +45,7 @@ Here we pass the local values to [layout data](https://svelte.dev/docs/kit/load#
 ```ts
 // src/app.d.ts
 
-import { Local } from '@thetinkerinc/isomorphic-local';
+import { Local } from '@thetinkerinc/isolocal';
 
 declare global {
 	namespace App {
@@ -91,7 +91,7 @@ Everywhere else (pages, components, library files), you can import and use the l
 // src/routes/+page.svelte
 
 <script lang="ts">
-import local from '@thetinkerinc/isomorphic-local';
+import local from '@thetinkerinc/isolocal';
 
 import Posts from './posts.svelte';
 import Pages from './pages.svelte';
