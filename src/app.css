@@ -1,1 +1,10 @@
 @import 'tailwindcss';
+
+@theme {
+	--font-title: 'Nunito Sans', 'sans-serif';
+}
+
+@utility cell-1 {
+	grid-column: 1 / 1;
+	grid-row: 1 / 1;
+}
