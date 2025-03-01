@@ -16,6 +16,9 @@ export default ts.config(
 	prettier,
 	...svelte.configs['flat/prettier'],
 	{
+		ignores: ['src/snippets/*']
+	},
+	{
 		languageOptions: {
 			globals: {
 				...globals.browser,
@@ -42,6 +45,9 @@ export default ts.config(
 			parserOptions: {
 				parser: ts.parser
 			}
+		},
+		rules: {
+			'svelte/no-at-html-tags': 'off'
 		}
 	}
 );

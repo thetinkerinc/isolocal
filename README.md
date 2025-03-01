@@ -73,15 +73,15 @@ import db from '$lib/db';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const defaultValue = 1;
-	const pageNum: number = locals.localStorage.get('lastPageVisited', defaultValue);
-
-	const posts = await db.getPosts({
-		pageNum
-	});
+	// Grab the provided local storage instance
+	const { localStorage } = locals;
+	const fallback = 1;
+	const page = localStorage.get('lastPageVisited', fallback);
 
 	return {
-		posts
+		posts: await db.getPosts({
+			page
+		})
 	};
 };
 ```
@@ -97,17 +97,17 @@ import Posts from './posts.svelte';
 import Pages from './pages.svelte';
 
 // set up a state variable with the local value
-const pageNum = $state(local.get('lastPageVisited', 1));
+let page = $state(local.get('lastPageVisited', 1));
 
 // update the stored value whenever the state changes
-$effect(() => local.set('lastPageVisited', pageNum));
+$effect(() => local.set('lastPageVisited', page));
 </script>
 
 <Posts />
 <Pages
-	{pageNum}
-	onprev={() => pageNum -= 1}
-	onnext={() => pageNum += 1} />
+	{page}
+	onprev={() => (page -= 1)}
+	onnext={() => (page += 1)} />
 ```
 
 

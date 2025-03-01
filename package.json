@@ -1,6 +1,6 @@
 {
 	"name": "@thetinkerinc/isolocal",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
@@ -51,6 +51,8 @@
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"publint": "^0.3.7",
+		"radashi": "^12.3.4",
+		"shiki": "^3.1.0",
 		"svelte": "^5.20.5",
 		"svelte-check": "^4.1.4",
 		"tailwindcss": "^4.0.9",
