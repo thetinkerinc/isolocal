@@ -1,6 +1,6 @@
 {
 	"name": "@thetinkerinc/isolocal",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
@@ -22,7 +22,6 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"exports": {

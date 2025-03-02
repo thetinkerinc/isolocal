@@ -23,12 +23,12 @@ class Local {
 		}
 	}
 
-	get<T>(key: string, fallback?: T): T | undefined {
+	get(key: string, fallback?: unknown) {
 		const vals = this.getAll();
 		return vals[key] ?? fallback;
 	}
 
-	set<T>(key: string, val: T) {
+	set(key: string, val: unknown) {
 		const vals = this.getAll();
 		vals[key] = val;
 		this.save(vals);
