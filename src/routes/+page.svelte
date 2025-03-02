@@ -16,7 +16,8 @@ import Snippet from './snippet.svelte';
 		<div class="text-center text-xl">Setup</div>
 		<Snippet file="hooks.ts" step={1} />
 		<Snippet file="layout.ts" step={2} />
-		<Snippet file="types.ts" step={3} />
+		<Snippet file="vite.ts" step={3} />
+		<Snippet file="types.ts" step={4} />
 	</div>
 	<div class="flex flex-col gap-6">
 		<div class="mt-10 text-center text-xl lg:mt-0">Usage</div>
