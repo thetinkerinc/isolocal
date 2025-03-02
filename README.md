@@ -41,7 +41,7 @@ export const load: LayoutServerLoad = async (event) => {
 Here we pass the local values to [layout data](https://svelte.dev/docs/kit/load#Layout-data) to make it available during SSR.
 
 
-5. Update vite config
+4. Update vite config
 ```ts
 // vite.config.ts
 
@@ -61,7 +61,7 @@ export default defineConfig({
 SvelteKit [does not currently support](https://github.com/sveltejs/kit/issues/1485) using `$app` imports in library code out of the box. We need to let vite know that isolocal should be bundled together with our app during build.
 
 
-4. Update TypeScript interface
+5. Update TypeScript interface
 ```ts
 // src/app.d.ts
 
