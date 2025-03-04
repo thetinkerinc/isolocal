@@ -17,7 +17,7 @@ function cp() {
 </script>
 
 <div class="relative">
-	<div class="overflow-hidden rounded-lg">
+	<div class="mx-auto max-w-[90vw] overflow-hidden rounded-lg shadow-lg">
 		{@html snippet}
 	</div>
 	{#if step}
@@ -37,5 +37,6 @@ function cp() {
 :global(pre.shiki) {
 	padding: 1rem;
 	overflow-x: auto;
+	opacity: 0.9;
 }
 </style>
