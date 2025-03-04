@@ -1,4 +1,4 @@
-<div class="font-title mb-5 grid place-content-center pt-10 text-[90px] font-bold">
+<div class="font-title mb-5 grid place-content-center pt-10 text-[65px] font-bold lg:text-[90px]">
 	<div id="top" class="cell-1">ISOLOCAL</div>
 	<div id="bottom" class="cell-1">ISOLOCAL</div>
 </div>

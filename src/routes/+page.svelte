@@ -7,7 +7,7 @@ import Snippet from './snippet.svelte';
 	<title>SvelteKit Isolocal</title>
 </svelte:head>
 <Title />
-<div class="mx-auto mb-10 w-[600px] max-w-[90%] text-center text-[24px]">
+<div class="mx-auto mb-10 w-[600px] max-w-[90%] text-center text-[20px] lg:text-[24px]">
 	Store and access user-specific data in load functions, during SSR, and on the client without
 	reaching for a database
 </div>
