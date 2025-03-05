@@ -32,10 +32,10 @@ function stopped(fn: () => void) {
 	</a>
 	{#if open}
 		<div
-			class="absolute top-full right-0 w-[400px] translate-y-2 rounded-lg bg-gray-200 p-2"
+			class="absolute top-full right-0 w-[200px] translate-y-2 rounded-lg bg-gray-200 p-2 lg:w-[400px]"
 			transition:scale={{ duration: 200 }}>
 			<div class="text-center">Choose a theme and refresh the page</div>
-			<div class="mt-2 grid grid-cols-4">
+			<div class="mt-2 grid grid-cols-2 lg:grid-cols-4">
 				{@render theme(1, 'Galaxy', 'from-zinc-800', 'to-purple-700')}
 				{@render theme(2, 'Mountain', 'from-zinc-500', 'to-stone-100')}
 				{@render theme(3, 'Desert', 'from-yellow-800', 'to-yellow-500')}
