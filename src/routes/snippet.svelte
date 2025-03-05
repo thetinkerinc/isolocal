@@ -1,6 +1,7 @@
 <script lang="ts">
 let { file, step }: Props = $props();
 
+import { scale, fade } from 'svelte/transition';
 import { page } from '$app/state';
 import { Clipboard } from 'lucide-svelte';
 
@@ -9,10 +10,16 @@ interface Props {
 	step?: number;
 }
 
-let snippet = $derived(page.data.snippets[file]);
+let showCopied = $state(false);
+
+let snippet = $derived(page.data.snippets[file].html);
 
 function cp() {
-	console.log('copying');
+	const { code } = page.data.snippets[file];
+	const toCopy = code.replace(/\/\/.*\n\n/, '');
+	navigator.clipboard.writeText(toCopy);
+	showCopied = true;
+	setTimeout(() => (showCopied = false), 600);
 }
 </script>
 
@@ -31,6 +38,14 @@ function cp() {
 		onclick={cp}>
 		<Clipboard />
 	</button>
+	{#if showCopied}
+		<div
+			class="absolute -top-6 -right-2 rounded bg-cyan-500 px-2 py-1"
+			in:scale={{ duration: 200 }}
+			out:fade={{ duration: 200 }}>
+			Copied
+		</div>
+	{/if}
 </div>
 
 <style>
