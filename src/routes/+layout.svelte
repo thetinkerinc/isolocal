@@ -1,28 +1,19 @@
 <script lang="ts">
 let { children } = $props();
 
+import Menu from './menu.svelte';
+import Footer from './footer.svelte';
+
+import getThemer from '../utils/themer.svelte';
+
 import '../app.css';
+
+const themer = getThemer();
 </script>
 
 <div
-	class="min-h-[100vh] bg-zinc-700 bg-[url('/bg.webp')] bg-cover bg-fixed bg-center pb-10 text-white bg-blend-soft-light">
+	class="min-h-[100vh] bg-zinc-700 bg-[url('/bg{themer.value}.webp')] bg-cover bg-fixed bg-center pb-10 text-white bg-blend-soft-light">
+	<Menu />
 	{@render children()}
-	<div class="mt-20 text-center">
-		Photo by
-		<a
-			href="https://unsplash.com/@evgenit?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
-			Evgeni Tcherkasski
-		</a>
-		on
-		<a
-			href="https://unsplash.com/photos/the-night-sky-is-filled-with-stars-above-a-lake-yRqSop1Li4Y?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
-			Unsplash
-		</a>
-	</div>
+	<Footer />
 </div>
-
-<style lang="postcss">
-a {
-	@apply hover:underline;
-}
-</style>
