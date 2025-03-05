@@ -17,3 +17,7 @@ const themer = getThemer();
 	{@render children()}
 	<Footer />
 </div>
+<div class="hidden bg-[url('/bg1.webp')]"></div>
+<div class="hidden bg-[url('/bg2.webp')]"></div>
+<div class="hidden bg-[url('/bg3.webp')]"></div>
+<div class="hidden bg-[url('/bg4.webp')]"></div>
