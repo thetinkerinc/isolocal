@@ -111,35 +111,37 @@ Everywhere else (pages, components, library files), you can import and use the l
 // src/routes/+page.svelte
 
 <script lang="ts">
+// Import and use local storage directly
+// in js, ts, and svelte files
+
 import local from '@thetinkerinc/isolocal';
 
 import Posts from './posts.svelte';
 import Pages from './pages.svelte';
 
-// set up a state variable with the local value
-let page = $state(local.get('lastPageVisited', 1));
-
-// update the stored value whenever the state changes
-$effect(() => local.set('lastPageVisited', page));
+function updatePage(change) {
+	const page = local.get('lastPageVisited', 1);
+	local.set('lastPageVisited', page + change);
+}
 </script>
 
 <Posts />
 <Pages
-	{page}
-	onprev={() => (page -= 1)}
-	onnext={() => (page += 1)} />
+	page={local.get('lastPageVisited', 1)}
+	onprev={() => updatePage(1)}
+	onnext={() => updatePage(-1)} />
 ```
 
 
 ## API
 ```ts
-get<T>(key: string, fallback?: T): T | undefined
+get(key: string, fallback?: unknown)
 ```
-Returns the value stored with the given key. If there is no value, return either an optional fallback value or undefined.
+Returns the value stored with the given key. If there is no value, return either an optional fallback value or undefined. In the browser, the value returned will be reactive.
 
 
 ```ts
-set<T>(key: string, val: T)
+set(key: string, val: unknown)
 ```
 Stores an arbitrary value with a given key.
 

@@ -7,12 +7,14 @@ import local from '@thetinkerinc/isolocal';
 import Posts from './posts.svelte';
 import Pages from './pages.svelte';
 
-// set up a state variable with the local value
-let page = $state(local.get('lastPageVisited', 1));
-
-// update the stored value whenever the state changes
-$effect(() => local.set('lastPageVisited', page));
+function updatePage(change) {
+	const page = local.get('lastPageVisited', 1);
+	local.set('lastPageVisited', page + change);
+}
 </script>
 
 <Posts />
-<Pages {page} onprev={() => (page -= 1)} onnext={() => (page += 1)} />
+<Pages
+	page={local.get('lastPageVisited', 1)}
+	onprev={() => updatePage(1)}
+	onnext={() => updatePage(-1)} />
