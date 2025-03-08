@@ -1,7 +1,5 @@
 <script lang="ts">
-import getThemer from '../utils/themer.svelte';
-
-const themer = getThemer();
+import local from '$lib/index.svelte';
 
 const credits = [
 	{
@@ -34,7 +32,7 @@ const credits = [
 	}
 ];
 
-let credit = $derived(credits[themer.value - 1]);
+let credit = $derived(credits[local.get('theme', 1) - 1]);
 </script>
 
 <div class="mt-20 text-center">

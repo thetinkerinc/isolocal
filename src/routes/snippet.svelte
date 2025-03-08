@@ -3,7 +3,7 @@ let { file, step }: Props = $props();
 
 import { scale, fade } from 'svelte/transition';
 import { page } from '$app/state';
-import { Clipboard } from 'lucide-svelte';
+import { Clipboard } from '@lucide/svelte';
 
 interface Props {
 	file: string;
@@ -34,7 +34,7 @@ function cp() {
 		</div>
 	{/if}
 	<button
-		class="absolute top-2 right-2 rounded p-1 transition hover:cursor-pointer hover:bg-zinc-800"
+		class="absolute top-2 right-2 rounded p-1 drop-shadow hover:cursor-pointer hover:bg-gray-600"
 		onclick={cp}>
 		<Clipboard />
 	</button>

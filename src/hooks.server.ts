@@ -1,6 +1,6 @@
 import { sequence } from '@sveltejs/kit/hooks';
 
-import { addLocalStorage } from '$lib/index';
+import { addLocalStorage } from '$lib/index.svelte';
 
 const hooks = [addLocalStorage];
 

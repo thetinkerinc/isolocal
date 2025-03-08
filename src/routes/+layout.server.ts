@@ -1,4 +1,4 @@
-import { getPageData } from '$lib/index';
+import { getPageData } from '$lib/index.svelte';
 
 import type { LayoutServerLoad } from './$types';
 

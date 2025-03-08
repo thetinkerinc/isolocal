@@ -1,12 +1,18 @@
 <script lang="ts">
 import { scale } from 'svelte/transition';
-import { CircleHelp, Github } from 'lucide-svelte';
+import { invalidateAll } from '$app/navigation';
+import { CircleHelp, Github } from '@lucide/svelte';
 
-import getThemer from '../utils/themer.svelte';
-
-const themer = getThemer();
+import local from '$lib/index.svelte';
 
 let open = $state(false);
+
+function setTheme(theme: number) {
+	return async () => {
+		local.set('theme', theme);
+		await invalidateAll();
+	};
+}
 
 function stopped(fn: () => void) {
 	return (evt: MouseEvent) => {
@@ -48,12 +54,12 @@ function stopped(fn: () => void) {
 {#snippet theme(idx: number, title: string, c1: string, c2: string)}
 	<button
 		class="cursor-pointer rounded-lg pt-2 pb-1 hover:bg-gray-300"
-		onclick={stopped(() => (themer.value = idx))}>
+		onclick={stopped(setTheme(idx))}>
 		<div class="flex flex-col items-center">
 			<div
 				class={[
 					`h-[20px] w-[20px] bg-linear-to-t ${c1} ${c2} rounded`,
-					themer.value === idx && 'outline outline-offset-2 outline-blue-500'
+					local.get('theme', 1) === idx && 'outline outline-offset-2 outline-blue-500'
 				]}>
 			</div>
 			<div class="text-sm text-gray-600">
