@@ -10,10 +10,7 @@ import '../app.css';
 </script>
 
 <div
-	class="min-h-[100vh] bg-zinc-700 bg-[url('/bg{local.get(
-		`theme`,
-		1
-	)}.webp')] bg-cover bg-fixed bg-center pb-10 text-white bg-blend-soft-light">
+	class="min-h-[100vh] bg-zinc-700 bg-[url('/bg{local.theme}.webp')] bg-cover bg-fixed bg-center pb-10 text-white bg-blend-soft-light">
 	<Menu />
 	{@render children()}
 	<Footer />

@@ -32,7 +32,7 @@ const credits = [
 	}
 ];
 
-let credit = $derived(credits[local.get('theme', 1) - 1]);
+let credit = $derived(credits[local.theme - 1]);
 </script>
 
 <div class="mt-20 text-center">

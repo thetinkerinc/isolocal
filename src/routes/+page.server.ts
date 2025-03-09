@@ -24,7 +24,7 @@ async function makeSnippets(local: Local) {
 		eager: true
 	});
 	const themes = ['one-dark-pro', 'poimandres', 'solarized-light', 'slack-dark'];
-	const theme = themes[local.get('theme', 1) - 1];
+	const theme = themes[local.theme - 1];
 	return await _.reduce(
 		Object.entries(snippets),
 		async (a: Snippets, [k, v]) => {

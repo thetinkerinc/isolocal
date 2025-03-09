@@ -9,7 +9,7 @@ let open = $state(false);
 
 function setTheme(theme: number) {
 	return async () => {
-		local.set('theme', theme);
+		local.theme = theme;
 		await invalidateAll();
 	};
 }
@@ -59,7 +59,7 @@ function stopped(fn: () => void) {
 			<div
 				class={[
 					`h-[20px] w-[20px] bg-linear-to-t ${c1} ${c2} rounded`,
-					local.get('theme', 1) === idx && 'outline outline-offset-2 outline-blue-500'
+					local.theme === idx && 'outline outline-offset-2 outline-blue-500'
 				]}>
 			</div>
 			<div class="text-sm text-gray-600">
