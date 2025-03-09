@@ -3,6 +3,11 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import { addLocalStorage } from '@thetinkerinc/isolocal';
 
-const hooks = [addLocalStorage];
+// Add default values
+const defaults = {
+	theme: 1
+};
+
+const hooks = [addLocalStorage(defaults)];
 
 export const handle = sequence(...hooks);

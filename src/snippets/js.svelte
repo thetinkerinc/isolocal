@@ -2,19 +2,22 @@
 // Import and use local storage directly
 // in js, ts, and svelte files
 
+let { snippet } = $props();
+
 import local from '@thetinkerinc/isolocal';
 
-import Posts from './posts.svelte';
-import Pages from './pages.svelte';
+import updateSnippet from '$lib/highlighter';
 
-function updatePage(change) {
-	const page = local.get('lastPageVisited', 1);
-	local.set('lastPageVisited', page + change);
-}
+import CodeBlock from './code-block.svelte';
+import ThemePicker from './theme-picker.svelte';
+
+$effect(() => {
+	// Local storage is reactive on the client
+	// and can be used in $derived and $effect
+	const html = updateSnippet(snippet, local.theme);
+	snippet = html;
+});
 </script>
 
-<Posts />
-<Pages
-	page={local.get('lastPageVisited', 1)}
-	onprev={() => updatePage(1)}
-	onnext={() => updatePage(-1)} />
+<CodeBlock {snippet} />
+<ThemePicker onchange={(theme) => (local.theme = theme)} />

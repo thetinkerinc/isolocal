@@ -1,11 +1,17 @@
 // src/app.d.ts
 
-import { Local } from '@thetinkerinc/isolocal';
+import type { Local } from '@thetinkerinc/isolocal';
+
+type Theme = 1 | 2 | 3 | 4;
 
 declare global {
 	namespace App {
+		// Define all the values you want
+		// to add to local storage
 		interface Locals {
-			localStorage: Local;
+			localStorage: Local & {
+				theme: Theme;
+			};
 		}
 	}
 }

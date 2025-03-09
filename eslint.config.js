@@ -44,6 +44,9 @@ export default ts.config(
 		languageOptions: {
 			parserOptions: {
 				parser: ts.parser
+			},
+			globals: {
+				App: 'readonly'
 			}
 		},
 		rules: {

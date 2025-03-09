@@ -22,12 +22,12 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"types": "./dist/index.d.ts",
+	"types": "./dist/index.svelte.d.ts",
 	"type": "module",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
+			"types": "./dist/index.svelte.d.ts",
+			"svelte": "./dist/index.svelte.js"
 		}
 	},
 	"peerDependencies": {

@@ -7,24 +7,50 @@ Uses [devalue](https://github.com/Rich-Harris/devalue) to stringify / parse data
 1. Install the package
 ```sh
 npm install @thetinkerinc/isolocal
+pnpm install @thetinkerinc/isolocal
 bun add @thetinkerinc/isolocal
 ```
 
-2. Add an instance to incoming requests
+2. Define the values you'll want to add to local storage. Provide a union of the base type along with your values. For example, if we wanted a theme value, it could look something like this:
+```ts
+// src/app.d.ts
+
+import type { Local } from '@thetinkerinc/isolocal';
+
+type Theme = 1 | 2 | 3 | 4;
+
+declare global {
+	namespace App {
+		interface Locals {
+			localStorage: Local & {
+				theme: Theme;
+			};
+		}
+	}
+}
+
+export {};
+```
+
+3. Add an instance to incoming requests and set default values
 ```ts
 // src/hooks.server.ts
 
 import { sequence } from '@sveltejs/kit/hooks';
 import { addLocalStorage } from '@thetinkerinc/isolocal';
 
-const hooks = [addLocalStorage];
+const defaults = {
+	theme: 1
+};
+
+const hooks = [addLocalStorage(defaults)];
 
 export const handle = sequence(...hooks);
 ```
 We inject a local storage instance into requests in our server hooks to make it available inside [load functions](https://svelte.dev/docs/kit/load). You can [add other hooks in the sequence](https://svelte.dev/docs/kit/@sveltejs-kit-hooks#sequence) like normal. If they will require access to local storage, just make sure you add them after.
 
 
-3. Add info to page data
+4. Add info to page data
 ```ts
 // src/routes/+layout.server.ts
 
@@ -41,7 +67,7 @@ export const load: LayoutServerLoad = async (event) => {
 Here we pass the local values to [layout data](https://svelte.dev/docs/kit/load#Layout-data) to make it available during SSR.
 
 
-4. Update vite config
+5. Update vite config
 ```ts
 // vite.config.ts
 
@@ -60,24 +86,6 @@ export default defineConfig({
 ```
 SvelteKit [does not currently support](https://github.com/sveltejs/kit/issues/1485) using `$app` imports in library code out of the box. We need to let vite know that isolocal should be bundled together with our app during build.
 
-
-5. Update TypeScript interface
-```ts
-// src/app.d.ts
-
-import { Local } from '@thetinkerinc/isolocal';
-
-declare global {
-	namespace App {
-		interface Locals {
-			localStorage: Local;
-		}
-	}
-}
-
-export {};
-```
-
 Now you're all set up and ready to go!
 
 ## Usage
@@ -88,20 +96,20 @@ Now you're all set up and ready to go!
 ```ts
 // src/routes/+page.server.ts
 
-import db from '$lib/db';
+import code from '$lib/snippet';
+import renderSnippet from '$lib/highlighter';
 
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	// Grab the provided local storage instance
 	const { localStorage } = locals;
-	const fallback = 1;
-	const page = localStorage.get('lastPageVisited', fallback);
+
+	// Use local storage like normal values
+	const snippet = await renderSnippet(code, localStorage.theme);
 
 	return {
-		posts: await db.getPosts({
-			page
-		})
+		snippet
 	};
 };
 ```
@@ -114,51 +122,42 @@ Everywhere else (pages, components, library files), you can import and use the l
 // Import and use local storage directly
 // in js, ts, and svelte files
 
+let { snippet } = $props();
+
 import local from '@thetinkerinc/isolocal';
 
-import Posts from './posts.svelte';
-import Pages from './pages.svelte';
+import updateSnippet from '$lib/highlighter';
 
-function updatePage(change) {
-	const page = local.get('lastPageVisited', 1);
-	local.set('lastPageVisited', page + change);
-}
+import CodeBlock from './code-block.svelte';
+import ThemePicker from './theme-picker.svelte';
+
+$effect(()=>{
+	// Local storage is reactive on the client
+	// and can be used in $derived and $effect
+	const html = updateSnippet(snippet, local.theme);
+	snippet = html;
+});
 </script>
 
-<Posts />
-<Pages
-	page={local.get('lastPageVisited', 1)}
-	onprev={() => updatePage(1)}
-	onnext={() => updatePage(-1)} />
+<CodeBlock {snippet} />
+<ThemePicker onchange={(theme) => local.theme = theme} />
 ```
 
 
 ## API
+For individual values, access them like any normal object
 ```ts
-get(key: string, fallback?: unknown)
+local.theme // Return the value stored for theme, or the default value if none has been set
+local.theme = 1 // Set the value for theme and persist it to local storage
+delete local.theme // Remove the stored value for theme
 ```
-Returns the value stored with the given key. If there is no value, return either an optional fallback value or undefined. In the browser, the value returned will be reactive.
 
-
+Isolocal also provides some utility functions
 ```ts
-set(key: string, val: unknown)
+getAll() // Returns an object containing all currently saved values,
+         // or the default value if nothing has been saved yet
 ```
-Stores an arbitrary value with a given key.
-
-
-```ts
-rm(key: string)
-```
-Removes the value stored with the given key. If there was no value stored for that key, it will do nothing.
-
 
 ```ts
-getAll()
+clear() // Removes all values from storage.
 ```
-Returns an object containing all currently saved values.
-
-
-```ts
-clear()
-```
-Removes all values from storage.

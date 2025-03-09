@@ -7,7 +7,7 @@ import local from '$lib/index.svelte';
 
 let open = $state(false);
 
-function setTheme(theme: number) {
+function setTheme(theme: App.Theme) {
 	return async () => {
 		local.theme = theme;
 		await invalidateAll();
@@ -51,7 +51,7 @@ function stopped(fn: () => void) {
 	{/if}
 </div>
 
-{#snippet theme(idx: number, title: string, c1: string, c2: string)}
+{#snippet theme(idx: App.Theme, title: string, c1: string, c2: string)}
 	<button
 		class="cursor-pointer rounded-lg pt-2 pb-1 hover:bg-gray-300"
 		onclick={stopped(setTheme(idx))}>
