@@ -37,9 +37,9 @@ let credit = $derived(credits[local.theme - 1]);
 
 <div class="mt-20 text-center">
 	Photo by
-	<a href={credit.profile} target="_blank">{credit.photographer}</a>
+	<a href={credit.profile} target="_blank" rel="external">{credit.photographer}</a>
 	on
-	<a href={credit.photo} target="_blank">Unsplash</a>
+	<a href={credit.photo} target="_blank" rel="external">Unsplash</a>
 </div>
 
 <style lang="postcss">

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { scale } from 'svelte/transition';
 import { invalidateAll } from '$app/navigation';
-import { CircleHelp, Github } from '@lucide/svelte';
+import { CircleQuestionMark, ExternalLink } from '@lucide/svelte';
 
 import local from '$lib/index.svelte';
 
@@ -28,13 +28,13 @@ function stopped(fn: () => void) {
 	<button
 		class="cursor-pointer rounded-full p-1 transition hover:bg-gray-300"
 		onclick={stopped(() => (open = !open))}>
-		<CircleHelp />
+		<CircleQuestionMark />
 	</button>
 	<a
 		class="rounded-full p-1 transition hover:bg-gray-300"
 		href="https://github.com/thetinkerinc/isolocal"
 		target="_blank">
-		<Github />
+		<ExternalLink />
 	</a>
 	{#if open}
 		<div
