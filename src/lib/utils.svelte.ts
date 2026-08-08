@@ -1,9 +1,17 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import { page } from '$app/state';
 import browserCookies from 'js-cookie';
 import * as devalue from 'devalue';
 
 import type { Cookies as SvelteKitCookies } from '@sveltejs/kit';
+
+// `$app/env` (not `$app/environment`) is what SvelteKit's own generated root.svelte imports
+// `browser` from internally (see @sveltejs/kit/src/core/sync/write_root.js) — `$app/environment`
+// is just a thin wrapper around the exact same underlying export (both ultimately come from
+// `app/env/index.js`'s `BROWSER` re-export), plus an unconditional console.warn in any consuming
+// app that has `experimental.explicitEnvironmentVariables` enabled. `$app/env` itself has no such
+// warning and isn't gated behind that flag (the `$app` alias is registered unconditionally), so
+// this gets the identical value without making every consumer of this library see that warning.
 
 type BrowserCookies = typeof browserCookies;
 type CookieJar = SvelteKitCookies | BrowserCookies;
