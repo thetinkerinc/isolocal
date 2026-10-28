@@ -76,11 +76,27 @@ class Local {
 		});
 	}
 
-	private parseCookie() {
+	private parseCookie(): Record<string, unknown> {
 		if (!this.cookies) {
 			throw new Error('Cookies can only be parsed in load functions and in the browser');
 		}
-		return devalue.parse(this.cookies.get(this.cookieName) ?? '[{}]');
+		const raw = this.cookies.get(this.cookieName);
+		if (raw === undefined) {
+			return {};
+		}
+		// A cookie that isn't a devalue-encoded object (corrupted, hand-edited, or set by a sibling
+		// subdomain under the same name) is treated as empty rather than thrown: this runs on every
+		// page load and at module import in the browser, so a throw here would break every page for
+		// that browser. Nothing deletes it; the next save() overwrites it.
+		try {
+			const parsed: unknown = devalue.parse(raw);
+			if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)) {
+				return parsed as Record<string, unknown>;
+			}
+		} catch {
+			// Fall through to an empty store.
+		}
+		return {};
 	}
 }
 
